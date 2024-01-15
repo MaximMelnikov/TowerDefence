@@ -19,7 +19,8 @@ namespace Core
         {
             Container
                 .Bind<IStateMachine>()
-                .To<ProjectStateMachine>().AsSingle();
+                .To<ProjectStateMachine>()
+                .AsSingle();
         }
         private void BindProjectStarterFactory()
         {

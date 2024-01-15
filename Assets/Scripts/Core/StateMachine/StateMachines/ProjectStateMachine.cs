@@ -1,4 +1,5 @@
 ﻿using Core.Bootstrap;
+using Core.Bootstrap.MapProceduralGenerator;
 using Core.Gameplay;
 using Core.SceneLoader;
 
@@ -11,9 +12,8 @@ namespace Core.StateMachine
         public ProjectStateMachine(ISceneLoader sceneLoader)
         {
             _sceneLoader = sceneLoader;
-            
+
             RegisterState<BootstrapState>(new BootstrapState(sceneLoader));
-            RegisterState<GameplayState>(new GameplayState(sceneLoader));
         }
     }
 }
