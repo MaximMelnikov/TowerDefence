@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core.Factory.Gizmo;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Core.Bootstrap.MapProceduralGenerator
@@ -14,6 +15,7 @@ namespace Core.Bootstrap.MapProceduralGenerator
         private MapSettings _mapSettings;
         private MapRoad[] _roads;
         private Ellipse[] _ellipses;
+        private int _spawnpointsCount;
 
         public MapGenerator(IGizmoDrawerFactory gizmoDrawerFactory)
         {
@@ -34,7 +36,8 @@ namespace Core.Bootstrap.MapProceduralGenerator
             SetSeed(seed);
 
             CreateEllipses();
-            GenerateRoads();
+            _spawnpointsCount = Random.Range(_mapSettings.SpawnpointsCount.Item1, _mapSettings.SpawnpointsCount.Item2);
+            GenerateRoads(0, 0);
         }
 
         private void CreateEllipses()
@@ -48,24 +51,30 @@ namespace Core.Bootstrap.MapProceduralGenerator
             }
         }
 
-        private void CreateSpawnpoints()
-        {
-            int spawnpointsCount = Random.Range(_mapSettings.SpawnpointsCount.Item1, _mapSettings.SpawnpointsCount.Item1);
-        }
-
         private void GenerateRoads(float xStartPos, float yStartPos)
         {
             int roadsCount = Random.Range(_mapSettings.RoadsCount.Item1, _mapSettings.RoadsCount.Item1);
             _roads = new MapRoad[roadsCount];
+
+            int restSpawnpoints = _spawnpointsCount;
             
             List<int> availableSegments = Enumerable.Range(0, SegmentsCount).ToList();
             
-            for (int r = 0; r < roadsCount; r++)
+            for (int i = 0; i < roadsCount; i++)
             {
                 int randIndex = Random.Range(0, availableSegments.Count);
                 int randEllipseDestinationIndex = Random.Range(0, _ellipses.Length);
                 
-                _roads[r] = new MapRoad(_gizmoDrawerFactory, availableSegments[randIndex], _ellipses[randEllipseDestinationIndex]);
+                int spawnpointsOnRoadMaxCount = restSpawnpoints - (roadsCount - (i + 1));
+                int spawnpointsOnRoadCount = restSpawnpoints;
+                if (roadsCount - i > 1)
+                {
+                    spawnpointsOnRoadCount = Random.Range(1, spawnpointsOnRoadMaxCount);
+                }
+
+                restSpawnpoints -= spawnpointsOnRoadCount;
+                
+                _roads[i] = new MapRoad(_gizmoDrawerFactory, availableSegments[randIndex], _ellipses[randEllipseDestinationIndex], spawnpointsOnRoadCount);
                 availableSegments.RemoveAt(randIndex);
             }
         }

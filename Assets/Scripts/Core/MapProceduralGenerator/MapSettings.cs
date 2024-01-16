@@ -5,8 +5,8 @@ namespace Core.Bootstrap.MapProceduralGenerator
     public class MapSettings
     {
         public (int, int) distanceFromStart = (0, 2);
-        public (int, int) RoadsCount = (2, 3);
-        public (int, int) SpawnpointsCount = (3, 6); //SpawnpointsCount >= RoadsCount
+        public (int, int) RoadsCount = (5, 10);
+        public (int, int) SpawnpointsCount = (30, 60); //SpawnpointsCount >= RoadsCount
 
         public bool Validate()
         {

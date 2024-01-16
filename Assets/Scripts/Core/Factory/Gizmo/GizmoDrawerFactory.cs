@@ -25,6 +25,14 @@ namespace Core.Factory
             {
                 drawer = _container.AddComponent<LineGizmoDrawer>();
             }
+            else if (drawable is IGraphGizmoDrawable)
+            {
+                drawer = _container.AddComponent<GraphGizmoDraweer>();
+            }
+            else if (drawable is ICircleGizmoDrawable)
+            {
+                drawer = _container.AddComponent<CircleGizmoDrawer>();
+            }
             componentsList.Add(drawable, drawer);
             
             drawer.Draw(drawable);
