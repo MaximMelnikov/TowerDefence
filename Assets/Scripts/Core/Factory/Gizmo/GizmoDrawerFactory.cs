@@ -21,9 +21,9 @@ namespace Core.Factory
         public void CreateDrawer(IGizmoDrawable drawable)
         {
             IGizmoDrawer drawer = null;
-            if (drawable is Ellipse)
+            if (drawable is ILineGizmoDrawable)
             {
-                drawer = _container.AddComponent<EllipseGizmoDrawer>();
+                drawer = _container.AddComponent<LineGizmoDrawer>();
             }
             componentsList.Add(drawable, drawer);
             

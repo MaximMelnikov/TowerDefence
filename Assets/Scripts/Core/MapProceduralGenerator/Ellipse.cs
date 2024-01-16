@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Core.Bootstrap.MapProceduralGenerator
 {
-    public class Ellipse : IDisposable, IGizmoDrawable
+    public class Ellipse : IDisposable, ILineGizmoDrawable
     {
-        private const int Segments = 30;
+        private const int Segments = 12;
         
         private readonly IGizmoDrawerFactory _gizmoDrawerFactory;
         private readonly float _xPos;
@@ -15,9 +15,10 @@ namespace Core.Bootstrap.MapProceduralGenerator
         private readonly float _xScale;
         private readonly float _yScale;
         
-        public Vector2[] EllipsePoints { get; private set; }
+        public bool IsLoop { get => true; }
+        public Vector2[] Points { get; private set; }
 
-        public Ellipse(IGizmoDrawerFactory gizmoDrawerFactory,float xPos, float yPos, float xScale, float yScale)
+        public Ellipse(IGizmoDrawerFactory gizmoDrawerFactory, float xPos, float yPos, float xScale, float yScale)
         {
             _gizmoDrawerFactory = gizmoDrawerFactory;
             _xPos = xPos;
@@ -31,7 +32,7 @@ namespace Core.Bootstrap.MapProceduralGenerator
 
         private void CalculateEllipsePoints()
         {
-            EllipsePoints = new Vector2[Segments];
+            Points = new Vector2[Segments];
             
             for (int i = 0; i < Segments; i++)
             {
@@ -39,7 +40,7 @@ namespace Core.Bootstrap.MapProceduralGenerator
                 float x = Mathf.Sin(angle) * _xScale + _xPos;
                 float y = Mathf.Cos(angle) * _yScale + _yPos;
 
-                EllipsePoints[i] = new Vector2(x, y);
+                Points[i] = new Vector2(x, y);
             }
         }
 
