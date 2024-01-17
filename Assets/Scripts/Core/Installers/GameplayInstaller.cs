@@ -8,6 +8,7 @@ namespace Core.Installers
     {
         public override void InstallBindings()
         {
+            BindMapTilesDatabase();
             BindGizmoDrawerFactory();
             BindMapGenerator();
         }
@@ -26,6 +27,13 @@ namespace Core.Installers
                 .Bind<IMapGenerator>()
                 .To<MapGenerator>()
                 .AsSingle();
+        }
+        
+        private void BindMapTilesDatabase()
+        {
+            Container
+                .Bind<MapTilesDatabase>()
+                .FromResources("MapTilesDatabase");
         }
     }
 }

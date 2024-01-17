@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Core;
+using UnityEngine;
 
 namespace Tools.Gizmo
 {
@@ -13,12 +14,13 @@ namespace Tools.Gizmo
 
             for (var i = 0; i < _drawable.Points.Length - 1; i++)
                 Gizmos.DrawLine(
-                    _drawable.Points[i],
-                    _drawable.Points[i + 1]);
+                    _drawable.Points[i].ToVector3WithYToZ(),
+                    _drawable.Points[i + 1].ToVector3WithYToZ());
+            
             if (_drawable.IsLoop)
                 Gizmos.DrawLine(
-                    _drawable.Points[_drawable.Points.Length - 1],
-                    _drawable.Points[0]);
+                    _drawable.Points[_drawable.Points.Length - 1].ToVector3WithYToZ(),
+                    _drawable.Points[0].ToVector3WithYToZ());
         }
 
         public void Draw(IGizmoDrawable drawable)
