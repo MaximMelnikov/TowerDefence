@@ -1,41 +1,36 @@
 ﻿using System;
-using Core.Factory.Gizmo;
+using System.Collections.Generic;
+using Tools.Gizmo;
 using UnityEngine;
 
-namespace Core.Bootstrap.MapProceduralGenerator
+namespace Core.MapProceduralGenerator
 {
     public class MapRoad : IDisposable, ILineGizmoDrawable
     {
         private readonly IGizmoDrawerFactory _gizmoDrawerFactory;
-        public int Segment { get; }
-        public Ellipse Destination { get; }
+        private readonly int _spawnpointsOnRoadCount;
         
         public bool IsLoop { get => false; }
         public Vector2[] Points { get; private set; }
+        public List<Vector2> PointsList = new List<Vector2>();
         
-        public MapRoad(IGizmoDrawerFactory gizmoDrawerFactory, int segment, Ellipse destinationEllipse)
+        public MapRoad(IGizmoDrawerFactory gizmoDrawerFactory, int spawnpointsOnRoadCount)
         {
             _gizmoDrawerFactory = gizmoDrawerFactory;
-            Segment = segment;
-            Destination = destinationEllipse;
+            _spawnpointsOnRoadCount = spawnpointsOnRoadCount;
 
-            SetWaypoints();
+            _gizmoDrawerFactory.CreateDrawer(this);
         }
 
-        private void SetWaypoints()
+        public void SetWaypoints(Vector2 position)
         {
-            Points = new Vector2[2];
-            Points[0] = new Vector2(0, 0);
-            Points[1] = Destination.Points[Segment];
-            
-            _gizmoDrawerFactory.CreateDrawer(this);
+            PointsList.Add(position);
+            Points = PointsList.ToArray();
         }
 
         public void Dispose()
         {
             _gizmoDrawerFactory.RemoveDrawer(this);
         }
-
-        
     }
 }

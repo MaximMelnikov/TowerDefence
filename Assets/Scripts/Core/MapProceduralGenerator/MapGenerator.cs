@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Factory.Gizmo;
+using Tools.Gizmo;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Core.Bootstrap.MapProceduralGenerator
+namespace Core.MapProceduralGenerator
 {
     public class MapGenerator : IMapGenerator
     {
         private readonly IGizmoDrawerFactory _gizmoDrawerFactory;
-        private const int SegmentsCount = 12;
         private int _seed;
         private MapSettings _mapSettings;
         private MapRoad[] _roads;
-        private Ellipse[] _ellipses;
+        private int _spawnpointsCount;
+        private int[,] map = new int[100, 100];
 
         public MapGenerator(IGizmoDrawerFactory gizmoDrawerFactory)
         {
@@ -32,41 +33,62 @@ namespace Core.Bootstrap.MapProceduralGenerator
             
             _mapSettings = mapSettings;
             SetSeed(seed);
-
-            CreateEllipses();
-            GenerateRoads();
-        }
-
-        private void CreateEllipses()
-        {
-            _ellipses = new Ellipse[_mapSettings.distanceFromStart.Item2 - _mapSettings.distanceFromStart.Item1];
-            int index = 0;
-            for (int i = _mapSettings.distanceFromStart.Item1; i < _mapSettings.distanceFromStart.Item2; i++)
-            {
-                _ellipses[index] = new Ellipse(_gizmoDrawerFactory, 0, 0, i+1, i+1);
-                index++;
-            }
+            _spawnpointsCount = Random.Range(_mapSettings.SpawnpointsCount.Item1, _mapSettings.SpawnpointsCount.Item1);
+            GenerateRoads(50 ,50);
         }
 
         private void CreateSpawnpoints()
         {
-            int spawnpointsCount = Random.Range(_mapSettings.SpawnpointsCount.Item1, _mapSettings.SpawnpointsCount.Item1);
+            
         }
 
-        private void GenerateRoads(float xStartPos, float yStartPos)
+        private void GenerateRoads(int xStartPos, int yStartPos)
         {
-            int roadsCount = Random.Range(_mapSettings.RoadsCount.Item1, _mapSettings.RoadsCount.Item1);
+            int roadsCount = Random.Range(_mapSettings.RoadsCount.Item1, _mapSettings.RoadsCount.Item2);
             _roads = new MapRoad[roadsCount];
             
-            List<int> availableSegments = Enumerable.Range(0, SegmentsCount).ToList();
+            int restSpawnpoints = _spawnpointsCount;
             
-            for (int r = 0; r < roadsCount; r++)
+            for (int i = 0; i < roadsCount; i++)
             {
-                int randIndex = Random.Range(0, availableSegments.Count);
-                int randEllipseDestinationIndex = Random.Range(0, _ellipses.Length);
-                
-                _roads[r] = new MapRoad(_gizmoDrawerFactory, availableSegments[randIndex], _ellipses[randEllipseDestinationIndex]);
-                availableSegments.RemoveAt(randIndex);
+                int spawnpointsOnRoadMaxCount = restSpawnpoints - (roadsCount - (i + 1));
+                int spawnpointsOnRoadCount = restSpawnpoints;
+                if (roadsCount - i > 1)
+                {
+                    spawnpointsOnRoadCount = Random.Range(1, spawnpointsOnRoadMaxCount);
+                }
+
+                restSpawnpoints -= spawnpointsOnRoadCount;
+                var road = new MapRoad(_gizmoDrawerFactory, spawnpointsOnRoadCount);
+                road.SetWaypoints(new Vector2(xStartPos, yStartPos));
+                _roads[i] = road;
+            }
+            map[xStartPos, yStartPos] = 1;
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < roadsCount; j++)
+                {
+                    Vector2 last = _roads[j].PointsList.Last();
+
+                    List<Vector2> freeCells = new List<Vector2>(4);
+                    freeCells.Add(new Vector2(last.x + 1, last.y));
+                    freeCells.Add(new Vector2(last.x - 1, last.y));
+                    freeCells.Add(new Vector2(last.x, last.y + 1));
+                    freeCells.Add(new Vector2(last.x, last.y - 1));
+
+                    for (int k = freeCells.Count-1; k >= 0; k--)
+                    {
+                        if (map[(int) freeCells[k].x, (int) freeCells[k].y] == 1)
+                        {
+                            freeCells.RemoveAt(k);
+                        }
+                    }
+                    
+                    var chosenDestination = Random.Range(0, freeCells.Count);
+                    map[(int)freeCells[chosenDestination].x, (int)freeCells[chosenDestination].y] = 1;
+                    _roads[j].SetWaypoints(freeCells[chosenDestination]);
+                }
             }
         }
         

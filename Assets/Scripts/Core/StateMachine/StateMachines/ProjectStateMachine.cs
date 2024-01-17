@@ -1,9 +1,7 @@
-﻿using Core.Bootstrap;
-using Core.Bootstrap.MapProceduralGenerator;
-using Core.Gameplay;
-using Core.SceneLoader;
+﻿using Core.SceneLoader;
+using Core.StateMachine.StateMachines.States;
 
-namespace Core.StateMachine
+namespace Core.StateMachine.StateMachines
 {
     public class ProjectStateMachine : StateMachine
     {

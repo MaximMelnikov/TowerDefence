@@ -1,13 +1,12 @@
-﻿using System;
-using Core.Bootstrap.MapProceduralGenerator;
-using Core.Factory;
-using Core.Gameplay;
+﻿using Core.Factory;
+using Core.MapProceduralGenerator;
 using Core.SceneLoader;
 using Core.StateMachine;
+using Core.StateMachine.StateMachines.States;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Bootstrap
+namespace Core
 {
     public class GameplayStarter : MonoBehaviour
     {

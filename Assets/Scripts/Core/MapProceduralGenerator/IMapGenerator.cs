@@ -1,4 +1,4 @@
-﻿namespace Core.Bootstrap.MapProceduralGenerator
+﻿namespace Core.MapProceduralGenerator
 {
     public interface IMapGenerator
     {

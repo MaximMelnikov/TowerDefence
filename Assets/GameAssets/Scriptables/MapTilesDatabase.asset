@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90104df9ef6a26744bff4080dbfbb100, type: 3}
+  m_Name: MapTilesDatabase
+  m_EditorClassIdentifier: 
+  _decorations:
+  - m_AssetGUID: a0a92f0aa243f864396b977da77104a5
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: e7fdbc8e06d357947b110ad0b130f108
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 210538b8b9f79bd4a8a1579c99805e59
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 597f5406fe7400744a7a15f9bc03ada7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 859ddecf8b634cc4b8941b8b0d7607e3
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: a8eaf00c70f9f064d8b99f925a1bce35
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _straight:
+    m_AssetGUID: b7ac22ea52485fd4c973b9763a6b48b1
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _turn:
+    m_AssetGUID: e7ea7f213d6299b419aeac41e0ea7d6a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _split:
+    m_AssetGUID: 3801811f50054e343bc9747df2f98317
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _crossroad:
+    m_AssetGUID: 34cdfb9f5af81464f8d4f97de52f16b6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _spawnpoint:
+    m_AssetGUID: 159a48ccd0a73444dabcbc0d7e670c49
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _castle:
+    m_AssetGUID: e09a52253dd38fd49985af081aad3c5e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _empty:
+    m_AssetGUID: 5e88e2894a640664c81066e10a5183d6
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _grass:
+    m_AssetGUID: e2b943f792ffb7a4c9415c72906d015d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

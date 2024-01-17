@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: MapMaterials
+  m_EditorClassIdentifier: 
+  m_GroupName: MapMaterials
+  m_Data:
+    m_SerializedData: []
+  m_GUID: c1c9b0328e36da34b846d06314992ff5
+  m_SerializeEntries:
+  - m_GUID: 2c322492b7ebd344480d6dcc5f052463
+    m_Address: _defaultMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 38a0fe7b4c0560742b90ecaba7082c31
+    m_Address: crystal
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: aacd2e1725ba19c45ae2498e1dde656e
+    m_Address: dirt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 1a9cb9d84f6f7e444999b458cc54ea31
+    m_Address: dirtDark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: d994a62051747564b97ea1c87160e0e2
+    m_Address: foliage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: eee65d48c3efe36448b3c54c1b84254a
+    m_Address: red
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 057a6f32126b6e44aa3e339384b1a8a1
+    m_Address: stone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: 1260c42d95744234e939a5f6048e81f7
+    m_Address: stoneDark
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  - m_GUID: ce9064ce71ef8fd4e9783a374567c888
+    m_Address: wood
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d9ec05a85e452ac4ba4208e74b6a584d, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1711d036c6b6b064995fcec1317d1e49, type: 2}
+    - {fileID: 11400000, guid: 927d003a37e25b74188555dab991335a, type: 2}

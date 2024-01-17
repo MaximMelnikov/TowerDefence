@@ -1,29 +1,31 @@
-using Core.Bootstrap.MapProceduralGenerator;
-using Core.Factory;
-using Core.Factory.Gizmo;
+using Core.MapProceduralGenerator;
+using Tools.Gizmo;
 using Zenject;
 
-public class GameplayInstaller : MonoInstaller
+namespace Core.Installers
 {
-    public override void InstallBindings()
+    public class GameplayInstaller : MonoInstaller
     {
-        BindGizmoDrawerFactory();
-        BindMapGenerator();
-    }
+        public override void InstallBindings()
+        {
+            BindGizmoDrawerFactory();
+            BindMapGenerator();
+        }
 
-    private void BindGizmoDrawerFactory()
-    {
-        Container
-            .Bind<IGizmoDrawerFactory>()
-            .To<GizmoDrawerFactory>()
-            .AsSingle();
-    }
+        private void BindGizmoDrawerFactory()
+        {
+            Container
+                .Bind<IGizmoDrawerFactory>()
+                .To<GizmoDrawerFactory>()
+                .AsSingle();
+        }
     
-    private void BindMapGenerator()
-    {
-        Container
-            .Bind<IMapGenerator>()
-            .To<MapGenerator>()
-            .AsSingle();
+        private void BindMapGenerator()
+        {
+            Container
+                .Bind<IMapGenerator>()
+                .To<MapGenerator>()
+                .AsSingle();
+        }
     }
 }

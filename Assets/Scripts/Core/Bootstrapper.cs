@@ -1,8 +1,9 @@
 ﻿using Core.StateMachine;
+using Core.StateMachine.StateMachines.States;
 using UnityEngine;
 using Zenject;
 
-namespace Core.Bootstrap
+namespace Core
 {
     public class Bootstrapper : MonoBehaviour
     {

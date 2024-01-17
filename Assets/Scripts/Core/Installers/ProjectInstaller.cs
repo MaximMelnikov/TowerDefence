@@ -1,10 +1,10 @@
 using Core.Factory;
 using Core.SceneLoader;
 using Core.StateMachine;
-using UnityEngine;
+using Core.StateMachine.StateMachines;
 using Zenject;
 
-namespace Core
+namespace Core.Installers
 {
     public class ProjectInstaller : MonoInstaller
     {

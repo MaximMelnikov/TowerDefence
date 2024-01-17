@@ -1,5 +1,4 @@
-﻿using Core.Bootstrap;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Core.Factory
@@ -15,7 +14,8 @@ namespace Core.Factory
 
         public void CreateBootstrapper()
         {
-            Bootstrapper bootstrapper = new GameObject("Bootstrapper")
+            Bootstrapper bootstrapper = 
+                new GameObject("Bootstrapper")
                 .AddComponent<Bootstrapper>();
             _container.Inject(bootstrapper);
         }
