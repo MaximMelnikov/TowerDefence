@@ -7,5 +7,6 @@
     Spawnpoint,
     Castle,
     Empty,
-    Grass
+    Grass,
+    TowerSlot
 }

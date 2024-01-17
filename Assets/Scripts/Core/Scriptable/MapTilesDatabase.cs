@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "MapTilesDatabase", menuName = "Scriptables/MapTilesDatabase")]
 public class MapTilesDatabase : ScriptableObject
@@ -15,6 +16,10 @@ public class MapTilesDatabase : ScriptableObject
     [SerializeField] private AssetReference _castle;
     [SerializeField] private AssetReference _empty;
     [SerializeField] private AssetReference _grass;
+    [SerializeField] private AssetReference _towerSlot;
+    [SerializeField] private AssetReference _tower1;
+    [SerializeField] private AssetReference _tower2;
+    
     
     public List<AssetReference> Decorations => _decorations;
     
@@ -36,6 +41,8 @@ public class MapTilesDatabase : ScriptableObject
                 return _castle;
             case TileType.Grass:
                 return _grass;
+            case TileType.TowerSlot:
+                return _towerSlot;
             default:
                 return _empty;
         }

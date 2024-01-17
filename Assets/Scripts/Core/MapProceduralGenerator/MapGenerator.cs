@@ -46,10 +46,9 @@ namespace Core.MapProceduralGenerator
             
             GenerateRoads(50 ,50);
             tasks.Add(DrawRoads());
-            
+            tasks.Add(GenerateTowers());
             _borders = GetMapBorders();
             tasks.Add(DrawGrass());
-            
             tasks.Add(CreateCastle());
 
             UnityEngine.Camera.main.GetComponent<Camera>().rect = _borders;
@@ -84,18 +83,45 @@ namespace Core.MapProceduralGenerator
             await UniTask.WhenAll(tasks);
         }
         
-        private async Task DrawTile(TileType type, Vector2 position, int rotation)
+        private async UniTask GenerateTowers()
         {
-            await 
-                _mapTilesDatabase.GetTile(type)
-                    .InstantiateAsync(position.ToVector3WithYToZ(), Quaternion.Euler(0, rotation, 0)).Task;
-        }
-        
-        private async Task DrawProp(int index, Vector2 position, int rotation)
-        {
-            await 
-                _mapTilesDatabase.Decorations[index]
-                    .InstantiateAsync(position.ToVector3WithYToZ(), Quaternion.Euler(0, rotation, 0)).Task;
+            List<UniTask> tasks = new List<UniTask>();
+            foreach (var road in _roads)
+            {
+                var emptyCells = new List<Vector2>();
+                for (int i = road.Points.Length - 2; i > 1; i--)
+                {
+                    List<Vector2> neighbours = new List<Vector2>(4);
+                    neighbours.Add(new Vector2(road.Points[i].x + 1, road.Points[i].y));
+                    neighbours.Add(new Vector2(road.Points[i].x - 1, road.Points[i].y));
+                    neighbours.Add(new Vector2(road.Points[i].x, road.Points[i].y + 1));
+                    neighbours.Add(new Vector2(road.Points[i].x, road.Points[i].y - 1));
+
+                    foreach (var neighbour in neighbours)
+                    {
+                        if (_map[(int)neighbour.x, (int)neighbour.y] == 0)
+                        {
+                            emptyCells.Add(neighbour);
+                        }
+                    }
+                }
+
+                if (emptyCells.Count == 0)
+                {
+                    continue;
+                }
+                
+                int maxTowersCount = Mathf.Clamp(3, 0, emptyCells.Count);
+                for (int i = 0; i < maxTowersCount; i++)
+                {
+                    var randomCell = Random.Range(0, emptyCells.Count);
+                    tasks.Add(CreateTowerSlot(emptyCells[randomCell]));
+                    tasks.Add(DrawTile(TileType.Grass, emptyCells[randomCell], 0));
+                    _map[(int)emptyCells[randomCell].x, (int)emptyCells[randomCell].y] = 1;
+                    emptyCells.RemoveAt(randomCell);
+                }
+            }
+            await UniTask.WhenAll(tasks);
         }
 
         private void GenerateRoads(int xStartPos, int yStartPos)
@@ -137,7 +163,7 @@ namespace Core.MapProceduralGenerator
 
                     for (int k = freeCells.Count-1; k >= 0; k--)
                     {
-                        if (_map[(int) freeCells[k].x, (int) freeCells[k].y] == 1)
+                        if (_map[(int) freeCells[k].x, (int) freeCells[k].y] != 0)
                         {
                             freeCells.RemoveAt(k);
                         }
@@ -148,7 +174,7 @@ namespace Core.MapProceduralGenerator
                     {
                         continue;
                     }
-                    _map[(int)freeCells[chosenDestination].x, (int)freeCells[chosenDestination].y] = 1;
+                    _map[(int)freeCells[chosenDestination].x, (int)freeCells[chosenDestination].y] = 2;
                     _roads[j].SetWaypoints(freeCells[chosenDestination]);
                 }
             }
@@ -170,13 +196,36 @@ namespace Core.MapProceduralGenerator
             await DrawTile(TileType.Castle, new Vector2(50, 50), 0);
         }
         
+        private async UniTask CreateTowerSlot(Vector2 position)
+        {
+            Vector3 offset = new Vector3(0, 0.1f, 0);
+            await 
+                _mapTilesDatabase.GetTile(TileType.TowerSlot)
+                    .InstantiateAsync(position.ToVector3WithYToZ() + offset, Quaternion.Euler(0, 0, 0)).Task;
+        }
+        
+        private async UniTask DrawTile(TileType type, Vector2 position, int rotation)
+        {
+            await 
+                _mapTilesDatabase.GetTile(type)
+                    .InstantiateAsync(position.ToVector3WithYToZ(), Quaternion.Euler(0, rotation, 0)).Task;
+        }
+        
+        private async UniTask DrawProp(int index, Vector2 position, int rotation)
+        {
+            _map[(int)position.x, (int)position.y] = 1;
+            await 
+                _mapTilesDatabase.Decorations[index]
+                    .InstantiateAsync(position.ToVector3WithYToZ(), Quaternion.Euler(0, rotation, 0)).Task;
+        }
+        
         private Rect GetMapBorders()
         {
             var minX = _roads.Min(road => road.Points.Min(point => point.x));
             var maxX = _roads.Max(road => road.Points.Max(point => point.x));
             var minY = _roads.Min(road => road.Points.Min(point => point.y));
             var maxY = _roads.Max(road => road.Points.Max(point => point.y));
-            return new Rect(minX, minY, maxX - minX, maxY - minY);
+            return new Rect(minX-1, minY-1, maxX - minX + 2, maxY - minY + 2);
         }
         
         private void SetSeed(int seed = -1)
