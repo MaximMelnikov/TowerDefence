@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Tools.Gizmo;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -35,9 +36,9 @@ namespace Core.MapProceduralGenerator
             Points = PointsList.ToArray();
         }
 
-        public async Task DrawRoad()
+        public async UniTask DrawRoad()
         {
-            List<Task> tasks = new List<Task>(PointsList.Count);
+            List<UniTask> tasks = new List<UniTask>(PointsList.Count);
             tasks.Add(DrawRoadTile(TileType.Crossroad, PointsList[0], 0));
             for (int i = 1; i < PointsList.Count; i++)
             {
@@ -81,50 +82,29 @@ namespace Core.MapProceduralGenerator
                     type = TileType.Straight;
                     rotation = 90;
                 }
-                else if (nextPointDirection == Vector2.up && previousPointDirection == Vector2.right)
+                else if (nextPointDirection == Vector2.up && previousPointDirection == Vector2.right
+                         || nextPointDirection == Vector2.right && previousPointDirection == Vector2.up)
                 {
                     type = TileType.Turn;
                     rotation = 270;
                 }
-                else if (nextPointDirection == Vector2.up && previousPointDirection == Vector2.left)
+                else if (nextPointDirection == Vector2.up && previousPointDirection == Vector2.left
+                         || nextPointDirection == Vector2.left && previousPointDirection == Vector2.up)
                 {
                     type = TileType.Turn;
                     rotation = 180;
                 }
-                else if (nextPointDirection == Vector2.down && previousPointDirection == Vector2.right)
+                else if (nextPointDirection == Vector2.down && previousPointDirection == Vector2.right
+                         || nextPointDirection == Vector2.right && previousPointDirection == Vector2.down)
                 {
                     type = TileType.Turn;
                     rotation = 0;
                 }
-                else if (nextPointDirection == Vector2.down && previousPointDirection == Vector2.left)
+                else if (nextPointDirection == Vector2.down && previousPointDirection == Vector2.left
+                         || nextPointDirection == Vector2.left && previousPointDirection == Vector2.down)
                 {
                     type = TileType.Turn;
                     rotation = 90;
-                }
-                else if (nextPointDirection == Vector2.right && previousPointDirection == Vector2.up)
-                {
-                    type = TileType.Turn;
-                    rotation = 270;
-                }
-                else if (nextPointDirection == Vector2.right && previousPointDirection == Vector2.down)
-                {
-                    type = TileType.Turn;
-                    rotation = 0;
-                }
-                else if (nextPointDirection == Vector2.left && previousPointDirection == Vector2.up)
-                {
-                    type = TileType.Turn;
-                    rotation = 180;
-                }
-                else if (nextPointDirection == Vector2.left && previousPointDirection == Vector2.down)
-                {
-                    type = TileType.Turn;
-                    rotation = 90;
-                }
-                else if (nextPointDirection == Vector2.up && previousPointDirection == Vector2.down)
-                {
-                    type = TileType.Straight;
-                    rotation = 180;
                 }
                 
                 if (i == PointsList.Count - 1)
@@ -134,10 +114,10 @@ namespace Core.MapProceduralGenerator
                     
                 tasks.Add(DrawRoadTile(type, currentPoint, rotation));
             }
-            await Task.WhenAll(tasks);
+            await UniTask.WhenAll(tasks);
         }
         
-        private async Task DrawRoadTile(TileType type, Vector2 position, int rotation)
+        private async UniTask DrawRoadTile(TileType type, Vector2 position, int rotation)
         {
             await 
                 _mapTilesDatabase.GetTile(type)

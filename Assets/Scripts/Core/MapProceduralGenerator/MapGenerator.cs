@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Tools.Gizmo;
 using UnityEngine;
+using Camera = Core.Gameplay.Camera;
 using Random = UnityEngine.Random;
 
 namespace Core.MapProceduralGenerator
@@ -13,12 +15,13 @@ namespace Core.MapProceduralGenerator
         private const int RoadLength = 10;
         private readonly IGizmoDrawerFactory _gizmoDrawerFactory;
         private readonly MapTilesDatabase _mapTilesDatabase;
-        private int _seed;
         private MapSettings _mapSettings;
+        
+        private int _seed;
         private MapRoad[] _roads;
         private int _spawnpointsCount;
-        private int[,] map = new int[100, 100];
-        private RectInt borders;
+        private int[,] _map = new int[100, 100];
+        private Rect _borders;
 
         public MapGenerator(IGizmoDrawerFactory gizmoDrawerFactory, MapTilesDatabase mapTilesDatabase)
         {
@@ -31,9 +34,9 @@ namespace Core.MapProceduralGenerator
             CreateMap(new MapSettings(), -1);
         }
         
-        public async Task CreateMap(MapSettings mapSettings, int seed = -1)
+        public async UniTask CreateMap(MapSettings mapSettings, int seed = -1)
         {
-            List<Task> tasks = new List<Task>();
+            List<UniTask> tasks = new List<UniTask>();
             if (!mapSettings.Validate())
                 return;
             
@@ -44,22 +47,24 @@ namespace Core.MapProceduralGenerator
             GenerateRoads(50 ,50);
             tasks.Add(DrawRoads());
             
-            borders = GetMapBorders();
+            _borders = GetMapBorders();
             tasks.Add(DrawGrass());
             
             tasks.Add(CreateCastle());
+
+            UnityEngine.Camera.main.GetComponent<Camera>().rect = _borders;
             
-            await Task.WhenAll(tasks);
+            await UniTask.WhenAll(tasks);
         }
 
-        private async Task DrawGrass()
+        private async UniTask DrawGrass()
         {
-            List<Task> tasks = new List<Task>();
-            for (int x = borders.xMin; x < borders.xMax+1; x++)
+            List<UniTask> tasks = new List<UniTask>();
+            for (int x = (int)_borders.xMin; x < (int)_borders.xMax+1; x++)
             {
-                for (int y = borders.yMin; y < borders.yMax+1; y++)
+                for (int y = (int)_borders.yMin; y < (int)_borders.yMax+1; y++)
                 {
-                    if (map[x,y] == 0)
+                    if (_map[x,y] == 0)
                     {
                         bool placeSomeProp = Random.Range(0, 100) > 70;
                         int propIndex = Random.Range(0, _mapTilesDatabase.Decorations.Count);
@@ -76,7 +81,7 @@ namespace Core.MapProceduralGenerator
                 }
             }
             
-            await Task.WhenAll(tasks);
+            await UniTask.WhenAll(tasks);
         }
         
         private async Task DrawTile(TileType type, Vector2 position, int rotation)
@@ -115,7 +120,7 @@ namespace Core.MapProceduralGenerator
                 road.SetWaypoints(new Vector2(xStartPos, yStartPos));
                 _roads[i] = road;
             }
-            map[xStartPos, yStartPos] = 1;
+            _map[xStartPos, yStartPos] = 1;
             
             //generate roads waypoints
             for (int i = 0; i < RoadLength; i++)
@@ -132,7 +137,7 @@ namespace Core.MapProceduralGenerator
 
                     for (int k = freeCells.Count-1; k >= 0; k--)
                     {
-                        if (map[(int) freeCells[k].x, (int) freeCells[k].y] == 1)
+                        if (_map[(int) freeCells[k].x, (int) freeCells[k].y] == 1)
                         {
                             freeCells.RemoveAt(k);
                         }
@@ -143,35 +148,35 @@ namespace Core.MapProceduralGenerator
                     {
                         continue;
                     }
-                    map[(int)freeCells[chosenDestination].x, (int)freeCells[chosenDestination].y] = 1;
+                    _map[(int)freeCells[chosenDestination].x, (int)freeCells[chosenDestination].y] = 1;
                     _roads[j].SetWaypoints(freeCells[chosenDestination]);
                 }
             }
         }
 
-        private async Task DrawRoads()
+        private async UniTask DrawRoads()
         {
-            List<Task> tasks = new List<Task>(_roads.Length);
+            List<UniTask> tasks = new List<UniTask>(_roads.Length);
             foreach (var road in _roads)
             {
                 tasks.Add(road.DrawRoad());
             }
             
-            await Task.WhenAll(tasks);
+            await UniTask.WhenAll(tasks);
         }
         
-        private async Task CreateCastle()
+        private async UniTask CreateCastle()
         {
             await DrawTile(TileType.Castle, new Vector2(50, 50), 0);
         }
         
-        private RectInt GetMapBorders()
+        private Rect GetMapBorders()
         {
-            var minX = (int)_roads.Min(road => road.Points.Min(point => point.x));
-            var maxX = (int)_roads.Max(road => road.Points.Max(point => point.x));
-            var minY = (int)_roads.Min(road => road.Points.Min(point => point.y));
-            var maxY = (int)_roads.Max(road => road.Points.Max(point => point.y));
-            return new RectInt(minX, minY, maxX - minX, maxY - minY);
+            var minX = _roads.Min(road => road.Points.Min(point => point.x));
+            var maxX = _roads.Max(road => road.Points.Max(point => point.x));
+            var minY = _roads.Min(road => road.Points.Min(point => point.y));
+            var maxY = _roads.Max(road => road.Points.Max(point => point.y));
+            return new Rect(minX, minY, maxX - minX, maxY - minY);
         }
         
         private void SetSeed(int seed = -1)
