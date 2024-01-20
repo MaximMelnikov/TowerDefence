@@ -25,7 +25,7 @@ namespace Tools.Gizmo
 
         public void RemoveDrawer(IGizmoDrawable drawable)
         {
-            Object.Destroy(drawable as MonoBehaviour);
+            Object.Destroy(componentsList[drawable] as Component);
             componentsList.Remove(drawable);
         }
     }

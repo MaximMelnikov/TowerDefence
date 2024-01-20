@@ -1,5 +1,5 @@
-﻿using Core.MapProceduralGenerator;
-using Core.SceneLoader;
+﻿using Core.SceneLoader;
+using Core.Services.MapProceduralGenerator;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -18,17 +18,15 @@ namespace Core.StateMachine.StateMachines.States
             _mapGenerator = mapGenerator;
         }
 
-        public UniTask Enter()
+        public async UniTask Enter()
         {
             Debug.Log("Enter GameplayState");
-            _mapGenerator.CreateMap();
-            return new UniTask();
+            await _mapGenerator.CreateMap(new MapSettings());
         }
 
-        public UniTask Exit()
+        public async UniTask Exit()
         {
             Debug.Log("Exit GameplayState");
-            return new UniTask();
         }
     }
 }

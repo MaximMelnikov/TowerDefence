@@ -1,6 +1,6 @@
 ﻿using Core.Factory;
-using Core.MapProceduralGenerator;
 using Core.SceneLoader;
+using Core.Services.MapProceduralGenerator;
 using Core.StateMachine;
 using Core.StateMachine.StateMachines.States;
 using UnityEngine;

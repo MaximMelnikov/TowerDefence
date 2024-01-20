@@ -81,3 +81,18 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  _towerSlot:
+    m_AssetGUID: a49410384f063b54ab65c869da780111
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _tower1:
+    m_AssetGUID: 0b2fc8f378842d8499553c6fd765e7ab
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _tower2:
+    m_AssetGUID: c377f91e583f2294a9e1d37b202ee4e7
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

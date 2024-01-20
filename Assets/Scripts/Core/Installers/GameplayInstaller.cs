@@ -1,4 +1,5 @@
-using Core.MapProceduralGenerator;
+using Core.Services.MapProceduralGenerator;
+using Core.Services.MapProceduralGenerator.MapFactory;
 using Tools.Gizmo;
 using Zenject;
 
@@ -9,6 +10,7 @@ namespace Core.Installers
         public override void InstallBindings()
         {
             BindMapTilesDatabase();
+            BindMapFactory();
             BindGizmoDrawerFactory();
             BindMapGenerator();
         }
@@ -34,6 +36,14 @@ namespace Core.Installers
             Container
                 .Bind<MapTilesDatabase>()
                 .FromResources("MapTilesDatabase");
+        }
+        
+        private void BindMapFactory()
+        {
+            Container
+                .Bind<IMapFactory>()
+                .To<MapFactory>()
+                .AsSingle();
         }
     }
 }

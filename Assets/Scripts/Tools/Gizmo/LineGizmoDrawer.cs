@@ -12,15 +12,15 @@ namespace Tools.Gizmo
             if (_drawable == null)
                 return;
 
-            for (var i = 0; i < _drawable.Points.Length - 1; i++)
+            for (var i = 0; i < _drawable.LineGizmoPoints.Length - 1; i++)
                 Gizmos.DrawLine(
-                    _drawable.Points[i].ToVector3WithYToZ(),
-                    _drawable.Points[i + 1].ToVector3WithYToZ());
+                    _drawable.LineGizmoPoints[i].ToVector3WithYToZ(),
+                    _drawable.LineGizmoPoints[i + 1].ToVector3WithYToZ());
             
-            if (_drawable.IsLoop)
+            if (_drawable.LineGizmoIsLoop)
                 Gizmos.DrawLine(
-                    _drawable.Points[_drawable.Points.Length - 1].ToVector3WithYToZ(),
-                    _drawable.Points[0].ToVector3WithYToZ());
+                    _drawable.LineGizmoPoints[_drawable.LineGizmoPoints.Length - 1].ToVector3WithYToZ(),
+                    _drawable.LineGizmoPoints[0].ToVector3WithYToZ());
         }
 
         public void Draw(IGizmoDrawable drawable)

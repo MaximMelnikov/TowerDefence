@@ -1,61 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Services.MapProceduralGenerator.MapFactory;
 using Cysharp.Threading.Tasks;
 using Tools.Gizmo;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Task = System.Threading.Tasks.Task;
 
-namespace Core.MapProceduralGenerator
+namespace Core.Services.MapProceduralGenerator
 {
     public class MapRoad : IDisposable, ILineGizmoDrawable
     {
         private readonly IGizmoDrawerFactory _gizmoDrawerFactory;
-        private readonly int _spawnpointsOnRoadCount;
-        private readonly MapTilesDatabase _mapTilesDatabase;
+        private readonly IMapFactory _mapFactory;
 
-        public bool IsLoop { get => false; }
-        public Vector2[] Points { get; private set; }
-        public List<Vector2> PointsList = new List<Vector2>();
+        public bool LineGizmoIsLoop { get => false; }
+        public Vector2[] LineGizmoPoints { get; private set; }
+        public List<Vector2> Waypoints = new List<Vector2>();
         
         public MapRoad(
             IGizmoDrawerFactory gizmoDrawerFactory, 
-            int spawnpointsOnRoadCount,
-            MapTilesDatabase mapTilesDatabase)
+            IMapFactory mapFactory)
         {
             _gizmoDrawerFactory = gizmoDrawerFactory;
-            _spawnpointsOnRoadCount = spawnpointsOnRoadCount;
-            _mapTilesDatabase = mapTilesDatabase;
+            _mapFactory = mapFactory;
 
             _gizmoDrawerFactory.CreateDrawer(this);
         }
 
-        public void SetWaypoints(Vector2 position)
+        public void AddWaypoint(Vector2 position)
         {
-            PointsList.Add(position);
-            Points = PointsList.ToArray();
+            Waypoints.Add(position);
+            LineGizmoPoints = Waypoints.ToArray();
         }
 
         public async UniTask DrawRoad()
         {
-            List<UniTask> tasks = new List<UniTask>(PointsList.Count);
-            tasks.Add(DrawRoadTile(TileType.Crossroad, PointsList[0], 0));
-            for (int i = 1; i < PointsList.Count; i++)
+            List<UniTask> tasks = new List<UniTask>(Waypoints.Count);
+            tasks.Add(_mapFactory.CreateObject(TileType.Crossroad, Waypoints[0], 0));
+            for (int i = 1; i < Waypoints.Count; i++)
             {
-                var currentPoint = PointsList[i];
+                var currentPoint = Waypoints[i];
                 
-                var previousPoint = PointsList[i - 1];
+                var previousPoint = Waypoints[i - 1];
                 var previousPointDirection = currentPoint - previousPoint;
 
                 Vector2 nextPoint;
 
-                if (i == PointsList.Count - 1)
+                if (i == Waypoints.Count - 1)
                 {
                     nextPoint = currentPoint + previousPointDirection;
                 }
                 else
                 {
-                    nextPoint = PointsList[i + 1];
+                    nextPoint = Waypoints[i + 1];
                 }
                 var nextPointDirection = currentPoint - nextPoint;
                 
@@ -107,21 +103,14 @@ namespace Core.MapProceduralGenerator
                     rotation = 90;
                 }
                 
-                if (i == PointsList.Count - 1)
+                if (i == Waypoints.Count - 1)
                 {
                     type = TileType.Spawnpoint;
                 }
                     
-                tasks.Add(DrawRoadTile(type, currentPoint, rotation));
+                tasks.Add(_mapFactory.CreateObject(type, currentPoint, rotation));
             }
             await UniTask.WhenAll(tasks);
-        }
-        
-        private async UniTask DrawRoadTile(TileType type, Vector2 position, int rotation)
-        {
-            await 
-                _mapTilesDatabase.GetTile(type)
-                .InstantiateAsync(position.ToVector3WithYToZ(), Quaternion.Euler(0, rotation, 0)).Task;
         }
 
         public void Dispose()

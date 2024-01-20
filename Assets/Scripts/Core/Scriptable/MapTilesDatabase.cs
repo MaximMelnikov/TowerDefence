@@ -20,7 +20,6 @@ public class MapTilesDatabase : ScriptableObject
     [SerializeField] private AssetReference _tower1;
     [SerializeField] private AssetReference _tower2;
     
-    
     public List<AssetReference> Decorations => _decorations;
     
     public AssetReference GetTile(TileType tileType)
