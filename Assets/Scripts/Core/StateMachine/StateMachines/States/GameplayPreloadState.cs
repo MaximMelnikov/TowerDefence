@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace Core.StateMachine.StateMachines.States
 {
-    public class GameplayState : IState
+    public class GameplayPreloadState : IState
     {
         private readonly IMapGenerator _mapGenerator;
         private readonly IStateMachine _projectStateMachine;
         private readonly ISceneLoader _sceneLoader;
 
-        public GameplayState(
+        public GameplayPreloadState(
             IStateMachine projectStateMachine,
             ISceneLoader sceneLoader,
             IMapGenerator mapGenerator)
@@ -23,12 +23,14 @@ namespace Core.StateMachine.StateMachines.States
 
         public async UniTask Enter()
         {
-            Debug.Log("Enter GameplayState");
+            Debug.Log("Enter GameplayPreloadState");
+            await _mapGenerator.CreateMap(new MapSettings());
+            _projectStateMachine.Enter<GameplayState>();
         }
 
         public async UniTask Exit()
         {
-            Debug.Log("Exit GameplayState");
+            Debug.Log("Exit GameplayPreloadState");
         }
     }
 }

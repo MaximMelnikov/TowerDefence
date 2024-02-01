@@ -6,6 +6,7 @@ namespace Core.StateMachine
 {
     public class StateMachine : IStateMachine
     {
+        public Action<IState> OnStateChange { get; set; }
         public IState CurrentState { get; private set; }
         private readonly Dictionary<Type, IState> _registeredStates = new Dictionary<Type, IState>();
 

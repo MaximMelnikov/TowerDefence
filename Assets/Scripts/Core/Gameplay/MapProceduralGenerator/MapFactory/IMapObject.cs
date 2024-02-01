@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
 
-namespace Core.Services.MapProceduralGenerator.MapFactory
+namespace Core.Gameplay.MapProceduralGenerator.MapFactory
 {
     public interface IMapObject
     {

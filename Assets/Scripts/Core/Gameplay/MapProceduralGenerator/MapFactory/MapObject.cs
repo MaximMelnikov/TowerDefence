@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Core.Services.MapProceduralGenerator.MapFactory
+namespace Core.Gameplay.MapProceduralGenerator.MapFactory
 {
     public class MapObject : IMapObject
     {

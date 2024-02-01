@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Services.MapProceduralGenerator.MapFactory;
+using Core.Gameplay.MapProceduralGenerator.MapFactory;
 using Cysharp.Threading.Tasks;
 using Tools.Gizmo;
 using UnityEngine;
-using Camera = Core.Gameplay.Camera;
 using Random = UnityEngine.Random;
 
-namespace Core.Services.MapProceduralGenerator
+namespace Core.Gameplay.MapProceduralGenerator
 {
     public class MapGenerator : IMapGenerator
     {

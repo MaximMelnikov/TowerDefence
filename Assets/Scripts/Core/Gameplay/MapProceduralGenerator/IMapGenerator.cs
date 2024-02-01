@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace Core.Services.MapProceduralGenerator
+namespace Core.Gameplay.MapProceduralGenerator
 {
     public interface IMapGenerator
     {

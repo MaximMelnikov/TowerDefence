@@ -1,6 +1,6 @@
 ﻿using Core.Factory;
+using Core.Gameplay.MapProceduralGenerator;
 using Core.SceneLoader;
-using Core.Services.MapProceduralGenerator;
 using Core.StateMachine;
 using Core.StateMachine.StateMachines.States;
 using UnityEngine;
@@ -39,8 +39,9 @@ namespace Core
 
         private void Start()
         {
-            _projectStateMachine.RegisterState<GameplayState>(new GameplayState(_sceneLoader, _mapGenerator));
-            _projectStateMachine.Enter<GameplayState>();
+            _projectStateMachine.RegisterState<GameplayPreloadState>(new GameplayPreloadState(_projectStateMachine, _sceneLoader, _mapGenerator));
+            _projectStateMachine.RegisterState<GameplayState>(new GameplayState(_projectStateMachine, _sceneLoader, _mapGenerator));
+            _projectStateMachine.Enter<GameplayPreloadState>();
         }
     }
 }

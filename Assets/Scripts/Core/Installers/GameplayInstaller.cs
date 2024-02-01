@@ -1,5 +1,6 @@
-using Core.Services.MapProceduralGenerator;
-using Core.Services.MapProceduralGenerator.MapFactory;
+using Core.Gameplay.MapProceduralGenerator;
+using Core.Gameplay.MapProceduralGenerator.MapFactory;
+using Core.Scriptable;
 using Tools.Gizmo;
 using Zenject;
 
@@ -13,6 +14,7 @@ namespace Core.Installers
             BindMapFactory();
             BindGizmoDrawerFactory();
             BindMapGenerator();
+            BindMonstersDatabase();
         }
 
         private void BindGizmoDrawerFactory()
@@ -44,6 +46,13 @@ namespace Core.Installers
                 .Bind<IMapFactory>()
                 .To<MapFactory>()
                 .AsSingle();
+        }
+        
+        private void BindMonstersDatabase()
+        {
+            Container
+                .Bind<MonstersDatabase>()
+                .FromResources("MonstersDatabase");
         }
     }
 }

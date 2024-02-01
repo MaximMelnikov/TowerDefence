@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core.Services.MapProceduralGenerator.MapFactory;
+using Core.Gameplay.MapProceduralGenerator.MapFactory;
 using Cysharp.Threading.Tasks;
 using Tools.Gizmo;
 using UnityEngine;
 
-namespace Core.Services.MapProceduralGenerator
+namespace Core.Gameplay.MapProceduralGenerator
 {
     public class MapRoad : IDisposable, ILineGizmoDrawable
     {

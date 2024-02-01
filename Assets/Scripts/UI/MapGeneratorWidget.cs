@@ -1,4 +1,4 @@
-﻿using Core.Services.MapProceduralGenerator;
+﻿using Core.Gameplay.MapProceduralGenerator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Core.Services.MapProceduralGenerator
+namespace Core.Gameplay.MapProceduralGenerator
 {
     public class MapSettings
     {
