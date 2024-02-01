@@ -8,7 +8,7 @@ namespace Core.Gameplay.Monsters
         [SerializeField] private AnimationCurve _curve;
         private void Update()
         {
-            transform.position += Vector3.left * _curve.Evaluate(Time.time) * Time.deltaTime;
+            transform.position += Vector3.forward * _curve.Evaluate(Time.time) * Time.deltaTime;
         }
     }
 }
