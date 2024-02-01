@@ -1,15 +1,18 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
 namespace Core.Gameplay.MapProceduralGenerator.MapFactory
 {
     public class MapFactory : IMapFactory
     {
+        private readonly DiContainer _container;
         private readonly MapTilesDatabase _mapTilesDatabase;
         private readonly Transform _mapContainer;
 
-        public MapFactory(MapTilesDatabase mapTilesDatabase)
+        public MapFactory(DiContainer container, MapTilesDatabase mapTilesDatabase)
         {
+            _container = container;
             _mapTilesDatabase = mapTilesDatabase;
 
             _mapContainer = new GameObject("MapContainer").transform;
@@ -31,6 +34,7 @@ namespace Core.Gameplay.MapProceduralGenerator.MapFactory
                     Quaternion.Euler(0, rotation, 0),
                     _mapContainer).Task;
             gameobject.name = $"({position.x},{position.y}) {type}";
+            _container.InjectGameObject(gameobject);
             return new MapObject(gameobject.transform, position);
         }
 

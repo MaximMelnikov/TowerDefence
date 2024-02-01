@@ -32,7 +32,7 @@ namespace Core.StateMachine
             TState newState = GetState<TState>();
             
             CurrentState = newState;
-            
+            OnStateChange?.Invoke(CurrentState);
             return newState;
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Core.Scriptable;
 using Core.StateMachine;
 using Core.StateMachine.StateMachines.States;
@@ -28,6 +27,7 @@ namespace Core.Gameplay
         {
             _projectStateMachine.OnStateChange += OnStateChange;
             _spawnerLiveCycle = SpawnerLiveCycle();
+            LoadBalance();
         }
 
         private void LoadBalance()
@@ -35,8 +35,8 @@ namespace Core.Gameplay
             //temp balance
             _spawnerBalance = new SpawnerBalance[3];
             _spawnerBalance[0] = new SpawnerBalance(3, 0, 0, 3);
-            _spawnerBalance[1] = new SpawnerBalance(4, 2, 0, 5);
-            _spawnerBalance[2] = new SpawnerBalance(3, 2, 1, 5);
+            _spawnerBalance[1] = new SpawnerBalance(4, 0, 0, 5);
+            _spawnerBalance[2] = new SpawnerBalance(5, 0, 0, 5);
         }
 
         private void OnStateChange(IState obj)
@@ -54,17 +54,17 @@ namespace Core.Gameplay
                 for (int j = 0; j < _spawnerBalance[i].CapsuleCount; j++)
                 {
                     SpawnMonster(MonsterType.Capsule);
-                    yield return new WaitForSeconds(.3f);
+                    yield return new WaitForSeconds(1f);
                 }
                 for (int j = 0; j < _spawnerBalance[i].SphereCount; j++)
                 {
                     SpawnMonster(MonsterType.Sphere);
-                    yield return new WaitForSeconds(.3f);
+                    yield return new WaitForSeconds(1f);
                 }
                 for (int j = 0; j < _spawnerBalance[i].BoxCount; j++)
                 {
                     SpawnMonster(MonsterType.Box);
-                    yield return new WaitForSeconds(.3f);
+                    yield return new WaitForSeconds(1f);
                 }
                 
                 yield return new WaitForSeconds(_spawnerBalance[i].NextStageDelay);
@@ -74,7 +74,13 @@ namespace Core.Gameplay
         private void SpawnMonster(MonsterType monsterType)
         {
             //TODO: add monsters factory
-            _monstersDatabase.GetMonster(monsterType).InstantiateAsync(_spawnPoint.position, Quaternion.identity);
+            var monsterAsset =_monstersDatabase.GetMonster(monsterType);
+            if (monsterAsset == null)
+            {
+                Debug.LogError($"MonsterAsset {monsterType} not found");
+                return;
+            }
+            monsterAsset.InstantiateAsync(_spawnPoint.position, Quaternion.identity);
         }
     }
 }
