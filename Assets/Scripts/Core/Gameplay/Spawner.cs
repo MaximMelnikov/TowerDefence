@@ -2,6 +2,7 @@
 using Core.Scriptable;
 using Core.StateMachine;
 using Core.StateMachine.StateMachines.States;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -12,7 +13,6 @@ namespace Core.Gameplay
         private IStateMachine _projectStateMachine;
         private MonstersDatabase _monstersDatabase;
         private SpawnerBalance[] _spawnerBalance;
-        private IEnumerator _spawnerLiveCycle;
         [SerializeField] private Transform _spawnPoint;
         
         [Inject]
@@ -26,7 +26,6 @@ namespace Core.Gameplay
         private void Init()
         {
             _projectStateMachine.OnStateChange += OnStateChange;
-            _spawnerLiveCycle = SpawnerLiveCycle();
             LoadBalance();
         }
 
@@ -43,31 +42,31 @@ namespace Core.Gameplay
         {
             if (obj is GameplayState)
             {
-                StartCoroutine(_spawnerLiveCycle);
+                SpawnerLiveCycle();
             }
         }
         
-        IEnumerator SpawnerLiveCycle()
+        private async UniTask SpawnerLiveCycle()
         {
             for (int i = 0; i < _spawnerBalance.Length; i++)
             {
                 for (int j = 0; j < _spawnerBalance[i].CapsuleCount; j++)
                 {
                     SpawnMonster(MonsterType.Capsule);
-                    yield return new WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f);
                 }
                 for (int j = 0; j < _spawnerBalance[i].SphereCount; j++)
                 {
                     SpawnMonster(MonsterType.Sphere);
-                    yield return new WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f);
                 }
                 for (int j = 0; j < _spawnerBalance[i].BoxCount; j++)
                 {
                     SpawnMonster(MonsterType.Box);
-                    yield return new WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f);
                 }
                 
-                yield return new WaitForSeconds(_spawnerBalance[i].NextStageDelay);
+                await UniTask.WaitForSeconds(_spawnerBalance[i].NextStageDelay);
             }
         }
 
