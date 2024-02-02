@@ -16,7 +16,15 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e898e893745729645b45ee8c3ca2cfaa
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 6b7136bfe0622d344b035e9b8f79e546
+    m_Address: Assets/GameAssets/Map/Spawner.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 77ecc2a7d320fdb48b27328d417f3c76
+    m_Address: Assets/GameAssets/Monsters/Capsule/Capsule.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d9ec05a85e452ac4ba4208e74b6a584d, type: 2}
   m_SchemaSet:

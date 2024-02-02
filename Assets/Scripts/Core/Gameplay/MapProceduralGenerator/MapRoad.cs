@@ -105,9 +105,10 @@ namespace Core.Gameplay.MapProceduralGenerator
                 
                 if (i == Waypoints.Count - 1)
                 {
-                    type = TileType.Spawnpoint;
+                    tasks.Add(_mapFactory.CreateSpawnpoint(currentPoint, rotation, this));
+                    continue;
                 }
-                    
+                
                 tasks.Add(_mapFactory.CreateObject(type, currentPoint, rotation));
             }
             await UniTask.WhenAll(tasks);

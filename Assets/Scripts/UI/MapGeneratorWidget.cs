@@ -1,4 +1,8 @@
 ﻿using Core.Gameplay.MapProceduralGenerator;
+using Core.Gameplay.Monsters.MonstersFactory;
+using Core.StateMachine;
+using Core.StateMachine.StateMachines.States;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +13,8 @@ namespace UI
     public class MapGeneratorWidget : MonoBehaviour
     {
         private IMapGenerator _mapGenerator;
+        private IMonstersFactory _monstersFactory;
+        private IStateMachine _projectStateMachine;
 
         [SerializeField] private TMP_InputField Seed;
         [SerializeField] private Slider RoadLength;
@@ -21,12 +27,21 @@ namespace UI
 
         [Inject]
         public void Construct(
-            IMapGenerator mapGenerator)
+            IMapGenerator mapGenerator,
+            IMonstersFactory monstersFactory,
+            IStateMachine projectStateMachine)
         {
+            _monstersFactory = monstersFactory;
             _mapGenerator = mapGenerator;
+            _projectStateMachine = projectStateMachine;
+        }
+
+        public void Generate()
+        {
+            GenerateAsync();
         }
         
-        public void Generate()
+        public async UniTask GenerateAsync()
         {
             int seed = int.Parse(Seed.text);
             int roadLength = (int) RoadLength.value;
@@ -36,12 +51,14 @@ namespace UI
             int chanceToSpawnPropPercent = int.Parse(ChanceToSpawnPropPercent.text);
             
             var mapSettings = new MapSettings(roadLength, maxTowersOnRoad, (roadsMinCount, roadsMaxCount), chanceToSpawnPropPercent);
-            _mapGenerator.CreateMap(mapSettings, seed);
+            await _mapGenerator.CreateMap(mapSettings, seed);
+            _projectStateMachine.Enter<GameplayState>(true);
         }
         
         public void Reset()
         {
             _mapGenerator.Reset();
+            _monstersFactory.Reset();
         }
         
         public void SetRoadLength()

@@ -1,26 +1,38 @@
-﻿using System.Collections;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using Core.Gameplay.MapProceduralGenerator;
+using Core.Gameplay.Monsters;
+using Core.Gameplay.Monsters.MonstersFactory;
 using Core.Scriptable;
 using Core.StateMachine;
 using Core.StateMachine.StateMachines.States;
 using Cysharp.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
+using IState = Core.StateMachine.IState;
 
 namespace Core.Gameplay
 {
     public class Spawner : MonoBehaviour
     {
         private IStateMachine _projectStateMachine;
-        private MonstersDatabase _monstersDatabase;
+        private IMonstersFactory _monstersFactory;
+        private MapRoad _mapRoad;
         private SpawnerBalance[] _spawnerBalance;
         [SerializeField] private Transform _spawnPoint;
-        
         [Inject]
-        private void Construct(IStateMachine projectStateMachine, MonstersDatabase monstersDatabase)
+        private void Construct(IStateMachine projectStateMachine, IMonstersFactory monstersFactory)
         {
             _projectStateMachine = projectStateMachine;
-            _monstersDatabase = monstersDatabase;
+            _monstersFactory = monstersFactory;
             Init();
+        }
+
+        public void AddRoad(MapRoad mapRoad)
+        {
+            _mapRoad = mapRoad;
         }
 
         private void Init()
@@ -53,33 +65,33 @@ namespace Core.Gameplay
                 for (int j = 0; j < _spawnerBalance[i].CapsuleCount; j++)
                 {
                     SpawnMonster(MonsterType.Capsule);
-                    await UniTask.WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
                 }
                 for (int j = 0; j < _spawnerBalance[i].SphereCount; j++)
                 {
                     SpawnMonster(MonsterType.Sphere);
-                    await UniTask.WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
                 }
                 for (int j = 0; j < _spawnerBalance[i].BoxCount; j++)
                 {
                     SpawnMonster(MonsterType.Box);
-                    await UniTask.WaitForSeconds(1f);
+                    await UniTask.WaitForSeconds(1f, cancellationToken: this.GetCancellationTokenOnDestroy());
                 }
                 
-                await UniTask.WaitForSeconds(_spawnerBalance[i].NextStageDelay);
+                await UniTask.WaitForSeconds(_spawnerBalance[i].NextStageDelay, cancellationToken: this.GetCancellationTokenOnDestroy());
             }
         }
 
-        private void SpawnMonster(MonsterType monsterType)
+        private async UniTask SpawnMonster(MonsterType monsterType)
         {
-            //TODO: add monsters factory
-            var monsterAsset =_monstersDatabase.GetMonster(monsterType);
-            if (monsterAsset == null)
-            {
-                Debug.LogError($"MonsterAsset {monsterType} not found");
-                return;
-            }
-            monsterAsset.InstantiateAsync(_spawnPoint.position, Quaternion.identity);
+            var waypoints = _mapRoad.Waypoints.ToArray();
+            
+            _monstersFactory.CreateMonster(monsterType, _spawnPoint.position, waypoints.Reverse().ToArray());
+        }
+        
+        private void OnDestroy()
+        {
+            _projectStateMachine.OnStateChange -= OnStateChange;
         }
     }
 }

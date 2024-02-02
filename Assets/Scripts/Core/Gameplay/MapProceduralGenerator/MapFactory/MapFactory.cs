@@ -48,5 +48,12 @@ namespace Core.Gameplay.MapProceduralGenerator.MapFactory
             gameobject.name = $"({position.x},{position.y}) Prop {index}";
             return new MapObject(gameobject.transform, position);
         }
+        
+        public async UniTask<IMapObject> CreateSpawnpoint(Vector2 position, int rotation, MapRoad road)
+        {
+            var spawnner = await CreateObject(TileType.Spawnpoint, position, rotation);
+            spawnner.Transform.GetComponent<Spawner>().AddRoad(road);
+            return spawnner;
+        }
     }
 }

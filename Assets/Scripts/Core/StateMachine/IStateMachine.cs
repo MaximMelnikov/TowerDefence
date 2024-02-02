@@ -8,6 +8,6 @@ namespace Core.StateMachine
         public Action<IState> OnStateChange { get; set; }
         public IState CurrentState { get; }
         public void RegisterState<TState>(IState state) where TState : IState;
-        public UniTask Enter<TState>() where TState : class, IState;
+        public UniTask Enter<TState>(bool force = false) where TState : class, IState;
     }
 }

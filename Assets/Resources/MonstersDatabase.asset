@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MonstersDatabase
   m_EditorClassIdentifier: 
   _capsule:
-    m_AssetGUID: 
+    m_AssetGUID: 77ecc2a7d320fdb48b27328d417f3c76
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

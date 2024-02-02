@@ -15,9 +15,9 @@ namespace Core.StateMachine
             _registeredStates.Add(typeof(TState), state);
         }
 
-        public async UniTask Enter<TState>() where TState : class, IState
+        public async UniTask Enter<TState>(bool force = false) where TState : class, IState
         {
-            if (CurrentState == GetState<TState>())
+            if (!force && CurrentState == GetState<TState>())
                 return;
             
             TState newState = await ChangeState<TState>();
