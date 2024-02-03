@@ -7,19 +7,19 @@ namespace Core
 {
     public class Bootstrapper : MonoBehaviour
     {
-        private IStateMachine projectStateMachine;
+        private IStateMachine _projectStateMachine;
 
         [Inject]
         private void Construct(IStateMachine projectStateMachine)
         {
-            this.projectStateMachine = projectStateMachine;
+            _projectStateMachine = projectStateMachine;
 
             Init();
         }
         
         private void Init()
         {
-            projectStateMachine.Enter<BootstrapState>();
+            _projectStateMachine.Enter<BootstrapState>();
 
             DontDestroyOnLoad(this);
         }
