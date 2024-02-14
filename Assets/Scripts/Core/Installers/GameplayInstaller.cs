@@ -17,6 +17,7 @@ namespace Core.Installers
             BindMapGenerator();
             BindMonstersDatabase();
             BindMonstersFactory();
+            BindInput();
         }
 
         private void BindGizmoDrawerFactory()
@@ -63,6 +64,12 @@ namespace Core.Installers
                 .Bind<IMonstersFactory>()
                 .To<MonstersFactory>()
                 .AsSingle();
+        }
+
+        private void BindInput()
+        {
+            Container
+                .InstantiatePrefabResource("LeanTouch");
         }
     }
 }
