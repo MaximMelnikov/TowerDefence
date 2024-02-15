@@ -1,18 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
+using Lean.Touch;
 using UnityEngine;
 
-public class InputService : MonoBehaviour
+public class InputService : IInputService
 {
-    // Start is called before the first frame update
-    void Start()
+    public InputService()
     {
-        
+        Debug.Log("InputService");
+        BindInputs();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void BindInputs()
     {
-        
+        LeanTouch.OnFingerTap += HandleFingerTap;
+    }
+
+    public void DisableInput()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void EnableInput()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void UnbindInputs()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HandleFingerTap(LeanFinger finger)
+    {
+        Debug.Log("Finger " + finger.Index + " tapped the screen");
     }
 }

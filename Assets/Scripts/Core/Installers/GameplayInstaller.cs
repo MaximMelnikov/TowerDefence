@@ -70,6 +70,12 @@ namespace Core.Installers
         {
             Container
                 .InstantiatePrefabResource("LeanTouch");
+            
+            Container
+                .Bind<IInputService>()
+                .To<InputService>()
+                .AsSingle()
+                .NonLazy();
         }
     }
 }
