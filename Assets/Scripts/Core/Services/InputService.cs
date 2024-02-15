@@ -31,6 +31,9 @@ public class InputService : IInputService
 
     public void HandleFingerTap(LeanFinger finger)
     {
-        Debug.Log("Finger " + finger.Index + " tapped the screen");
+        if (!finger.IsOverGui)
+        {
+            Debug.Log("Finger " + finger.Index + " tapped the screen");
+        }
     }
 }
