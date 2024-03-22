@@ -18,6 +18,8 @@ namespace Core.Installers
             BindMapGenerator();
             BindMonstersDatabase();
             BindMonstersFactory();
+            BindTowersDatabase();
+            BindTowersFactory();
             BindInput();
         }
 
@@ -77,6 +79,21 @@ namespace Core.Installers
                 .To<InputService>()
                 .AsSingle()
                 .NonLazy();
+        }
+
+        private void BindTowersDatabase()
+        {
+            Container
+                .Bind<TowersDatabase>()
+                .FromResources("TowersDatabase");
+        }
+
+        private void BindTowersFactory()
+        {
+            Container
+                .Bind<ITowersFactory>()
+                .To<TowersFactory>()
+                .AsSingle();
         }
     }
 }

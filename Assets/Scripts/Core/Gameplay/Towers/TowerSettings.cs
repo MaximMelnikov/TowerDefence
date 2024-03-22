@@ -1,7 +1,8 @@
 namespace Core.Gameplay
 {
-    public class TowerSettings
+    public struct TowerSettings
     {
-
+        public float _fireDistance;
+        public float _fireRate;
     }
 }

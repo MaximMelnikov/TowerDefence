@@ -1,13 +1,23 @@
 using Core.Services.Input;
 using Lean.Touch;
 using UnityEngine;
+using Zenject;
 
 [RequireComponent(typeof(SphereCollider))]
 public class TowerSpot : MonoBehaviour, IInputInteractable
 {
+    private ITowersFactory _towersFactory;
+
     public bool IsInputEnabled { get; set; }
 
-    private void Awake()
+    [Inject]
+    private void Construct(ITowersFactory towersFactory)
+    {
+        _towersFactory = towersFactory;
+        Init();
+    }
+
+    private void Init()
     {
         IsInputEnabled = true;
     }
@@ -15,5 +25,7 @@ public class TowerSpot : MonoBehaviour, IInputInteractable
     public void InputAction(LeanFinger finger)
     {
         Debug.Log("TowerSpot tapped");
+        _towersFactory.CreateTower("", transform.position);
+        IsInputEnabled = false;
     }
 }

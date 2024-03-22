@@ -14,6 +14,7 @@ namespace UI
     {
         private IMapGenerator _mapGenerator;
         private IMonstersFactory _monstersFactory;
+        private ITowersFactory _towersFactory;
         private IStateMachine _projectStateMachine;
 
         [SerializeField] private TMP_InputField Seed;
@@ -29,10 +30,12 @@ namespace UI
         public void Construct(
             IMapGenerator mapGenerator,
             IMonstersFactory monstersFactory,
+            ITowersFactory towersFactory,
             IStateMachine projectStateMachine)
         {
             _monstersFactory = monstersFactory;
             _mapGenerator = mapGenerator;
+            _towersFactory = towersFactory;
             _projectStateMachine = projectStateMachine;
         }
 
@@ -59,6 +62,7 @@ namespace UI
         {
             _mapGenerator.Reset();
             _monstersFactory.Reset();
+            _towersFactory.Reset();
         }
         
         public void SetRoadLength()

@@ -25,6 +25,10 @@ MonoBehaviour:
     m_Address: Assets/GameAssets/Monsters/Capsule/Capsule.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 27ec177cd47ca524fbdde4af3096d24d
+    m_Address: Assets/GameAssets/Map/TowerSpot.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d9ec05a85e452ac4ba4208e74b6a584d, type: 2}
   m_SchemaSet:

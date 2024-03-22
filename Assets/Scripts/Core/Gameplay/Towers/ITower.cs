@@ -1,18 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class ITower : MonoBehaviour
+using Cysharp.Threading.Tasks;
+public interface ITower
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public UniTask StartFiring();
+    public void StopFiring();
 }
