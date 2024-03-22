@@ -12,7 +12,7 @@ public class TowerSpot : MonoBehaviour, IInputInteractable
         IsInputEnabled = true;
     }
 
-    public void DoAction(LeanFinger finger)
+    public void InputAction(LeanFinger finger)
     {
         Debug.Log("TowerSpot tapped");
     }

@@ -42,7 +42,7 @@ namespace Core.Services.Input
             {
                 Debug.Log("Finger " + finger.Index + " tapped");
                 var interactable = PhysRaycaster(finger);
-                interactable?.DoAction(finger);
+                interactable?.InputAction(finger);
             }
         }
 

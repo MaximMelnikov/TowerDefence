@@ -5,6 +5,6 @@ namespace Core.Services.Input
     public interface IInputInteractable
     {
         public bool IsInputEnabled { get; set; }
-        public void DoAction(LeanFinger finger);
+        public void InputAction(LeanFinger finger);
     }
 }
