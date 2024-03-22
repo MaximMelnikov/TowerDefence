@@ -2,6 +2,7 @@ using Core.Gameplay.MapProceduralGenerator;
 using Core.Gameplay.MapProceduralGenerator.MapFactory;
 using Core.Gameplay.Monsters.MonstersFactory;
 using Core.Scriptable;
+using Core.Services.Input;
 using Tools.Gizmo;
 using Zenject;
 
