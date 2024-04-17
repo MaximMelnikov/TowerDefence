@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using Core.Gameplay.Monsters.MonstersFactory;
 using Cysharp.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.Serialization;
+using Zenject;
 
 namespace Core.Gameplay.Monsters
 {
@@ -14,6 +16,13 @@ namespace Core.Gameplay.Monsters
         [SerializeField] private AnimationCurve _moveSpeedCurve;
         private Vector3[] _waypoints;
         private int _currentWaypointIndex;
+        private IMonstersFactory _monstersFactory;
+
+        [Inject]
+        private void Construct(IMonstersFactory monstersFactory)
+        {
+            _monstersFactory = monstersFactory;
+        }
 
         public void StartMove() //TODO: move to state machine
         {
@@ -29,6 +38,7 @@ namespace Core.Gameplay.Monsters
                     _currentWaypointIndex++;
                     if (_currentWaypointIndex == _waypoints.Length)
                     {
+                        _monstersFactory.DestroyMonster(this);
                         Destroy(gameObject);
                         break;
                     }

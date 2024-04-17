@@ -3,29 +3,32 @@ using Lean.Touch;
 using UnityEngine;
 using Zenject;
 
-[RequireComponent(typeof(SphereCollider))]
-public class TowerSpot : MonoBehaviour, IInputInteractable
+namespace Core.Gameplay
 {
-    private ITowersFactory _towersFactory;
-
-    public bool IsInputEnabled { get; set; }
-
-    [Inject]
-    private void Construct(ITowersFactory towersFactory)
+    [RequireComponent(typeof(SphereCollider))]
+    public class TowerSpot : MonoBehaviour, IInputInteractable
     {
-        _towersFactory = towersFactory;
-        Init();
-    }
+        private ITowersFactory _towersFactory;
 
-    private void Init()
-    {
-        IsInputEnabled = true;
-    }
+        public bool IsInputEnabled { get; set; }
 
-    public void InputAction(LeanFinger finger)
-    {
-        Debug.Log("TowerSpot tapped");
-        _towersFactory.CreateTower("", transform.position);
-        IsInputEnabled = false;
+        [Inject]
+        private void Construct(ITowersFactory towersFactory)
+        {
+            _towersFactory = towersFactory;
+            Init();
+        }
+
+        private void Init()
+        {
+            IsInputEnabled = true;
+        }
+
+        public void InputAction(LeanFinger finger)
+        {
+            Debug.Log("TowerSpot tapped");
+            _towersFactory.CreateTower("", transform.position);
+            IsInputEnabled = false;
+        }
     }
 }

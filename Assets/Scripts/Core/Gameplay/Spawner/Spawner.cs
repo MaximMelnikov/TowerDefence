@@ -22,6 +22,7 @@ namespace Core.Gameplay
         private MapRoad _mapRoad;
         private SpawnerBalance[] _spawnerBalance;
         [SerializeField] private Transform _spawnPoint;
+        
         [Inject]
         private void Construct(IStateMachine projectStateMachine, IMonstersFactory monstersFactory)
         {

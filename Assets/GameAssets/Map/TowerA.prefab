@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _towerProjectile:
-    m_AssetGUID: 
+    m_AssetGUID: 8acd99b5d5072484b9ec241b28625566
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

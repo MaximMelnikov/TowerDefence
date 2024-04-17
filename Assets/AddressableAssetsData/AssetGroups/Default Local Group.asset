@@ -29,6 +29,14 @@ MonoBehaviour:
     m_Address: Assets/GameAssets/Map/TowerSpot.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 82232889120fe6c47a7756c004e144bd
+    m_Address: Assets/GameAssets/Map/TowerA.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8acd99b5d5072484b9ec241b28625566
+    m_Address: Assets/GameAssets/Map/Projectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d9ec05a85e452ac4ba4208e74b6a584d, type: 2}
   m_SchemaSet:

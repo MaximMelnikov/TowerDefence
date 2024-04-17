@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TowersDatabase
   m_EditorClassIdentifier: 
   _tower:
-    m_AssetGUID: 
+    m_AssetGUID: 82232889120fe6c47a7756c004e144bd
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
